@@ -19,31 +19,51 @@ export default function HeroBanner({
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      const now = new Date().getTime();
+  const fetchBanners = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/banners`);
 
-      if (now - parsed.timestamp < CACHE_EXPIRY) {
-        setImages(parsed.data);
-        setLoading(false);
-        return;
-      } else {
-        // Remove expired cache
-        localStorage.removeItem(CACHE_KEY);
-      }
+      const banners = res.data.map((b, i) => ({
+        src: b.image_url,
+        alt: b.title || `Banner ${i + 1}`,
+      }));
+
+      // Save new data to cache
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+          data: banners,
+          timestamp: new Date().getTime(),
+        })
+      );
+
+      setImages(banners);
+    } catch (err) {
+      console.error("Failed to fetch banners:", err);
+      setImages([]);
+    } finally {
+      setLoading(false);
     }
-    fetchBanners();
-  }, []);
+  };
+
+  // Remove cache completely so latest banners load
+  localStorage.removeItem(CACHE_KEY);
+
+  fetchBanners();
+}, []);
+
 
   const fetchBanners = async () => {
     try {
       const res = await axios.get(`${API_BASE}/banners`);
+       console.log("API Response:", res.data); // <== LOG THIS
       const banners = res.data.map((b, i) => ({
         src: b.image_url,
         alt: b.alt || `Banner ${i + 1}`,
       }));
       setImages(banners);
+          console.log("Processed Banners:", banners); // <== LOG THIS
+
 
       // Save to localStorage with timestamp
       localStorage.setItem(
