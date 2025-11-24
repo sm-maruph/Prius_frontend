@@ -41,7 +41,7 @@ export default function About() {
                 <strong>NAME OF THE COMPANY:</strong> Grupo Sourcing Ltd.
               </p>
               <p>
-                <strong>YEAR OF ESTABLISHMENT:</strong> 2005
+                <strong>YEAR OF ESTABLISHMENT:</strong> 2016
               </p>
               <p>
                 <strong>ADDRESS:</strong> House 256, Road: 03 (East Side) DOHS
@@ -50,7 +50,7 @@ export default function About() {
             </div>
             <div className="space-y-3 backdrop-blur-xl border border-white/20 dark:border-neutral rounded-2xl shadow-xl overflow-hidden p-6 ">
               <p>
-                <strong>CONTACT PERSON:</strong> Zamal U Ahmed (CEO)
+                <strong>CONTACT PERSON:</strong> Zamal U. Ahmed (CEO)
               </p>
               <p>
                 <strong>Phone:</strong> BD: +88 01711556131
@@ -88,7 +88,7 @@ export default function About() {
             Grupo Sourcing is a distinguished Bangladeshi enterprise founded in
             2016, specializing in the dynamic world of garment fashion. Our
             diverse portfolio spans denim, heavy knits, jersey, woven fabrics,
-            home textiles, sportswear, and outdoor apparel. With over 20 years
+            home textiles, sportswear, and outdoor apparel. With over 9 years
             of in-depth expertise in the garment industry and profound insights
             into both Bangladeshi and global markets, we are uniquely positioned
             to deliver unmatched value and innovation to our partners.
