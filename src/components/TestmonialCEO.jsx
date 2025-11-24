@@ -19,7 +19,7 @@ const TestimonialCEO = () => {
         />
 
         <h3 className="text-2xl md:text-2xl font-semibold font-heading text-heading mt-6">
-           Zamal U Ahmed
+           Zamal U. Ahmed
         </h3>
 
         <p className="max-w-4xl text-center mt-6 text-body font-sans text-base md:text-lg leading-relaxed">
