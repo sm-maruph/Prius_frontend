@@ -23,7 +23,7 @@ export default function CategoryInfoCards() {
       id: "strength",
       title: "OUR STRENGTH",
       lines: [
-        "20+ Years Experience",
+        "9+ Years Experience",
         "Integrated Supply Chain",
         "In‑House QC",
         "Global Flexibility",
