@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const rawStats = [
-  { label: "Years in Business", value: 20, suffix: "+" },
+  { label: "Years in Business", value: 9, suffix: "+" },
   { label: "Offices", value: 2 },
-  { label: "Happy Customers", value: 500, suffix: "+" },
+  { label: "Happy Customers", value: 100, suffix: "+" },
   { label: "Visitors", value: 2000, suffix: "+" },
 ];
 
