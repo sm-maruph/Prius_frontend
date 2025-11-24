@@ -35,8 +35,8 @@ export default function AboutSection() {
             Grupo Sourcing Ltd
           </h2>
           <p className="text-sm leading-relaxed font-sans text-heading relative z-10">
-            “Grupo Sourcing Ltd, founded in 2005, is a leading Bangladeshi
-            apparel sourcing company with over two decades of industry
+            “Grupo Sourcing Ltd, founded in 2016, is a leading Bangladeshi
+            apparel sourcing company with over 9 years of industry
             expertise. Renowned for quality, reliability, and innovation, we
             serve global fashion brands across denim, knitwear, woven,
             sportswear, and home textiles.
