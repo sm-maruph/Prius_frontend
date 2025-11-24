@@ -70,7 +70,7 @@ export default function PartnersSection() {
               <img
                 src={partner.logo_url}
                 alt={partner.name}
-                className="max-h-14 object-contain grayscale hover:grayscale-0 transition duration-300"
+                className="max-h-14 object-contain grayscale-0 hover:transition duration-300"
                 onError={(e) => {
                   e.currentTarget.src =
                     "data:image/svg+xml;utf8," +
