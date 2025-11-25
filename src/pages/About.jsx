@@ -8,7 +8,7 @@ export default function About() {
       {/* 🟦 Banner Section */}
       <section className="relative h-[50vh] flex items-center justify-center bg-primary-gradient text-center text-white overflow-visible">
         <img
-          src="https://kafjvkvzsdkofnzevohc.supabase.co/storage/v1/object/public/gsl/banners/b3.png"
+          src="https://kafjvkvzsdkofnzevohc.supabase.co/storage/v1/object/public/gsl/others/about_banner.png"
           alt="About Banner"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
