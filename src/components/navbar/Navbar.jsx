@@ -1,328 +1,128 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-
-const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Contact Us", path: "/contact" },
-  {
-    name: "Our Strength",
-    dropdown: [
-      { label: "WOVEN SHOWROOM", path: "/services/woven" },
-      { label: "KNIT SHOWROOM", path: "/services/knit" },
-      { label: "SAMPLE SECTION", path: "/services/sample" },
-      { label: "MERCHANDISING", path: "/services/merchandising" },
-    ],
-  },
-  // { name: "Our Clients", path: "/clients" },
-  { name: "Compliance & Ethics", path: "/compliance" },
-];
+// components/navbar/Navbar.jsx
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== "undefined") {
-      return (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      );
-    }
-    return false;
-  });
-
-  const [open, setOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(null);
-
-  const burgerRef = useRef(null);
-  const firstLinkRef = useRef(null);
-  const menuRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.theme = "dark";
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.theme = "light";
-    }
-  }, [darkMode]);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-      requestAnimationFrame(() => {
-        firstLinkRef.current?.focus();
-      });
-    } else {
-      document.body.style.overflow = "";
-      burgerRef.current?.focus();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  const links = [
+    { href: "#about",    label: "About" },
+    { href: "#services", label: "Services" },
+    { href: "#prius",    label: "Hybrid Battery" },
+    { href: "#gallery",  label: "Gallery" },
+    { href: "#reviews",  label: "Reviews" },
+    { href: "#contact",  label: "Contact" },
+  ];
 
-  useEffect(() => {
-    function onKey(e) {
-      if (e.key === "Escape" && open) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  useEffect(() => {
-    function onClick(e) {
-      if (
-        open &&
-        menuRef.current &&
-        !menuRef.current.contains(e.target) &&
-        !burgerRef.current.contains(e.target)
-      ) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, [open]);
-
-  const handleNavClick = () => setOpen(false);
+  const navStyle = {
+    position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+    height: "60px",
+    background: scrolled
+      ? "rgba(8,15,35,.97)"
+      : "linear-gradient(180deg,rgba(8,15,35,.9) 0%,transparent 100%)",
+    backdropFilter: scrolled ? "blur(20px)" : "none",
+    borderBottom: scrolled ? "1px solid rgba(245,168,0,.2)" : "none",
+    transition: "all .35s ease",
+    display: "flex", alignItems: "center",
+    padding: "0 24px",
+  };
 
   return (
-    <nav className="relative flex items-center justify-between 
-  px-2 sm:px-4 md:px-6 lg:px-2 xl:px-10 py-2 
-  bg-primary dark:bg-accent shadow sticky top-0 z-50">
-
-      {/* Left: Logo + Company Name */}
-      <div className="flex-1 flex items-center space-x-1 whitespace-wrap">
-        <img
-          src="https://kafjvkvzsdkofnzevohc.supabase.co/storage/v1/object/public/gsl/logo/gsl_logo.png"
-          alt="Company Logo"
-          className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-16 lg:h-16 xl:w-18 xl:h-18 rounded-full object-contain"
-        />
-        <Link
-          to="/"
-          className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl font-bold text-heading dark:text-heading cursor-pointer select-none"
-        >
-          Grupo Sourcing Ltd
-        </Link>
-      </div>
-
-      {/* Center: Desktop Nav */}
-      <div className="flex-1 hidden md:flex justify-center">
-        <ul
-          className="flex items-center space-x-1 md:space-x-2 lg:space-3 xl:space-4 text-heading dark:text-heading flex-nowrap"
-          role="menubar"
-          aria-label="Primary"
-        >
-          {navLinks.map((link) => (
-            <li
-              key={link.name}
-              className="group relative cursor-pointer px-1 md:px-2 lg:px-3 xl:px-4 py-2 rounded-md transition-colors duration-150
-    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500
-    whitespace-nowrap hover:text-text-hover
-    after:content-[''] after:absolute after:left-3 after:right-3 after:bottom-1
-    after:block after:h-[2px] after:bg-current after:origin-left after:scale-x-0
-    after:transition-transform after:duration-200 after:ease-out
-    hover:after:scale-x-100"
-              onMouseEnter={() => link.dropdown && setDropdownOpen(link.name)}
-              onMouseLeave={() => link.dropdown && setDropdownOpen(null)}
-              onClick={() => handleNavClick(link.name)}
-            >
-              {link.dropdown ? (
-                <div className="flex items-center gap-1">
-                  {link.name}
-                  <span
-                    className={`text-sm transition-transform duration-200 ${
-                      dropdownOpen === link.name ? "rotate-180" : ""
-                    }`}
-                  >
-                    ▼
-                  </span>
-                </div>
-              ) : (
-                <Link to={link.path}>{link.name}</Link>
-              )}
-
-              {/* Dropdown (Desktop) */}
-              {link.dropdown && dropdownOpen === link.name && (
-                <ul className="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
-                  {link.dropdown.map((item) => (
-                    <li key={item.label}>
-                      <Link
-                        to={item.path}
-                        onClick={handleNavClick}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Right: Theme Toggle + Mobile Menu Button */}
-      <div className="flex-1 flex justify-end items-center">
-        <div className="hidden md:block mr-3">
-          <button
-            onClick={() => setDarkMode((prev) => !prev)}
-            aria-label="Toggle Dark Mode"
-            className="relative w-16 h-8 border border-white rounded-full transition-colors duration-500
-             bg-gradient-to-r from-yellow-300 to-orange-400 dark:from-gray-700 dark:to-gray-900
-             shadow-lg flex items-center px-1 cursor-pointer hover:shadow-xl focus:outline-none"
-          >
-            {/* Slider */}
-            <div
-              className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-neutral
-                shadow-md transform transition-all duration-500 flex items-center justify-center
-                ${darkMode ? "translate-x-8 rotate-[360deg]" : "rotate-0"}`}
-            >
-              {/* Sun / Moon icon */}
-              <span className="text-sm">{darkMode ? "🌙" : "☀️"}</span>
+    <>
+      <nav style={navStyle}>
+        {/* Brand */}
+        <a href="#hero" style={{ display:"flex", alignItems:"center", gap:"10px", textDecoration:"none", marginRight:"auto" }}>
+          <div style={{
+            width:38, height:38, borderRadius:8, background:"linear-gradient(135deg,#1348B8,#0A2A6E)",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            boxShadow:"0 0 16px rgba(19,72,184,.5)",
+          }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5A800" strokeWidth="2.5">
+              <rect x="3" y="10" width="18" height="7" rx="2"/>
+              <line x1="7" y1="10" x2="7" y2="7"/><line x1="17" y1="10" x2="17" y2="7"/>
+              <line x1="7" y1="7" x2="17" y2="7"/>
+            </svg>
+          </div>
+          <div>
+            <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:16, lineHeight:1.1, color:"#fff" }}>
+              Prius Hybrid Battery
             </div>
+            <div style={{ fontSize:10, fontWeight:600, color:"#F5A800", letterSpacing:".08em", textTransform:"uppercase" }}>
+              Auto Repair · Long Beach
+            </div>
+          </div>
+        </a>
 
-            {/* Subtle glowing effect */}
-            <div
-              className={`absolute top-0 left-0 w-full h-full rounded-full pointer-events-none
-                transition-opacity duration-500
-                ${
-                  darkMode
-                    ? "bg-yellow-200/30 dark:bg-gray-900/40"
-                    : "bg-yellow-100/50"
-                }`}
-            ></div>
-          </button>
+        {/* Desktop links */}
+        <div style={{ display:"flex", gap:24, alignItems:"center" }} className="hide-mobile">
+          {links.map(l => (
+            <a key={l.href} href={l.href} style={{
+              fontSize:13, fontWeight:600, color:"rgba(255,255,255,.75)",
+              textDecoration:"none", letterSpacing:".04em", transition:"color .2s",
+            }}
+            onMouseEnter={e => e.target.style.color="#F5A800"}
+            onMouseLeave={e => e.target.style.color="rgba(255,255,255,.75)"}
+            >{l.label}</a>
+          ))}
         </div>
 
-        {/* Hamburger (Mobile) */}
-        <button
-          ref={burgerRef}
-          className="flex flex-col items-center justify-center md:hidden ml-2 w-10 h-10 p-1 focus:outline-none"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((s) => !s)}
+        <a href="tel:+15622350298" style={{
+          marginLeft:24, background:"linear-gradient(135deg,#F5A800,#FF6B00)",
+          color:"#080F23", fontWeight:800, fontSize:13, padding:"9px 18px",
+          borderRadius:8, textDecoration:"none", letterSpacing:".04em",
+          display:"flex", alignItems:"center", gap:6, whiteSpace:"nowrap",
+          boxShadow:"0 4px 16px rgba(245,168,0,.4)", transition:"all .2s",
+        }}
+        className="hide-mobile"
+        onMouseEnter={e => e.currentTarget.style.transform="scale(1.04)"}
+        onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}
         >
-          <span
-            className={`block w-6 h-0.5 bg-gray-700 dark:bg-gray-300 rounded transition-transform duration-300 ${
-              open ? "rotate-45 translate-y-1.5" : ""
-            }`}
-          />
-          <span
-            className={`block w-6 h-0.5 my-1 bg-gray-700 dark:bg-gray-300 rounded transition-opacity duration-300 ${
-              open ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`block w-6 h-0.5 bg-gray-700 dark:bg-gray-300 rounded transition-transform duration-300 ${
-              open ? "-rotate-45 -translate-y-1.5" : ""
-            }`}
-          />
+          📞 (562) 235-0298
+        </a>
+
+        {/* Burger */}
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="show-mobile"
+          style={{ background:"none", border:"none", color:"#fff", cursor:"pointer", fontSize:24, marginLeft:"auto" }}>
+          {mobileOpen ? "✕" : "☰"}
         </button>
-      </div>
+      </nav>
 
-      {/* Mobile Nav */}
-      <div
-        id="mobile-menu"
-        ref={menuRef}
-        className={`fixed top-0 right-0 w-11/12 sm:w-2/3 max-w-xs h-screen overflow-y-auto bg-primary dark:bg-primary shadow-lg z-50 transform transition-transform duration-300 flex flex-col box-border
-    ${open ? "translate-x-0" : "translate-x-full"}
-  `}
-      >
-        <ul className="flex flex-col pt-20 px-6 gap-4 text-gray-700 dark:text-gray-300 text-lg">
-          {navLinks.map((link) => (
-            <li key={link.name} className="flex flex-col">
-              <div
-                onClick={() =>
-                  link.dropdown
-                    ? setDropdownOpen(
-                        dropdownOpen === link.name ? null : link.name
-                      )
-                    : handleNavClick(link.name)
-                }
-                className="flex justify-between items-center px-4 py-3 hover:text-red-500 cursor-pointer"
-              >
-                {link.dropdown ? (
-                  link.name
-                ) : (
-                  <Link to={link.path} onClick={handleNavClick}>
-                    {link.name}
-                  </Link>
-                )}
-                {link.dropdown && (
-                  <span className="text-sm">
-                    {dropdownOpen === link.name ? "▲" : "▼"}
-                  </span>
-                )}
-              </div>
-
-              {link.dropdown && dropdownOpen === link.name && (
-                <ul className="pl-6 pb-2 space-y-2 text-base text-gray-600 dark:text-gray-400">
-                  {link.dropdown.map((item) => (
-                    <li key={item.label}>
-                      <Link
-                        to={item.path}
-                        onClick={handleNavClick}
-                        className="hover:text-red-500 block"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div style={{
+          position:"fixed", top:60, left:0, right:0, zIndex:99,
+          background:"rgba(8,15,35,.98)", backdropFilter:"blur(20px)",
+          borderBottom:"2px solid rgba(245,168,0,.3)",
+          padding:"20px 24px", display:"flex", flexDirection:"column", gap:4,
+        }}>
+          {links.map(l => (
+            <a key={l.href} href={l.href}
+              onClick={() => setMobileOpen(false)}
+              style={{
+                padding:"12px 0", fontSize:16, fontWeight:600, color:"rgba(255,255,255,.8)",
+                textDecoration:"none", borderBottom:"1px solid rgba(255,255,255,.06)",
+              }}>
+              {l.label}
+            </a>
           ))}
-
-          {/* Theme Toggle in mobile */}
-          <li className="mt-2 px-4 py-2">
-            <div className="flex items-center justify-between">
-              <span className="text-base font-medium text-gray-800 dark:text-gray-200">
-                Theme
-              </span>
-              <button
-                onClick={() => setDarkMode((prev) => !prev)}
-                aria-label="Toggle Dark Mode"
-                className="relative w-16 h-8 rounded-full transition-colors duration-500
-             bg-gradient-to-r from-yellow-300 to-orange-400 dark:from-gray-700 dark:to-gray-900
-             shadow-lg flex items-center px-1 cursor-pointer hover:shadow-xl focus:outline-none"
-              >
-                {/* Slider */}
-                <div
-                  className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white dark:bg-yellow-400
-                shadow-md transform transition-all duration-500 flex items-center justify-center
-                ${darkMode ? "translate-x-8 rotate-[360deg]" : "rotate-0"}`}
-                >
-                  {/* Sun / Moon icon */}
-                  <span className="text-sm">{darkMode ? "🌙" : "☀️"}</span>
-                </div>
-
-                {/* Subtle glowing effect */}
-                <div
-                  className={`absolute top-0 left-0 w-full h-full rounded-full pointer-events-none
-                transition-opacity duration-500
-                ${
-                  darkMode
-                    ? "bg-yellow-200/30 dark:bg-gray-900/40"
-                    : "bg-yellow-100/50"
-                }`}
-                ></div>
-              </button>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      {/* Overlay */}
-      {open && (
-        <div
-          className="relative inset-0 z-40 bg-black bg-opacity-40 md:hidden"
-          onClick={() => setOpen(false)}
-        />
+          <a href="tel:+15622350298" style={{
+            marginTop:12, background:"linear-gradient(135deg,#F5A800,#FF6B00)",
+            color:"#080F23", fontWeight:800, fontSize:16, padding:"14px",
+            borderRadius:10, textDecoration:"none", textAlign:"center",
+          }}>📞 (562) 235-0298</a>
+        </div>
       )}
-    </nav>
+
+      <style>{`
+        @media(max-width:768px){.hide-mobile{display:none!important}}
+        @media(min-width:769px){.show-mobile{display:none!important}}
+      `}</style>
+    </>
   );
 }
