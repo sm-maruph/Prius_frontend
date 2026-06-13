@@ -656,9 +656,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <p className="gallery-note">
+          {/* <p className="gallery-note">
             Replace each card with <code style={{ background: "rgba(255,255,255,.08)", padding: "1px 6px", borderRadius: 4 }}>&lt;img src="..." /&gt;</code> to display real shop photos.
-          </p>
+          </p> */}
         </div>
       </section>
 
