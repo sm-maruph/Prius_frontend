@@ -1,9 +1,63 @@
-
 import { useEffect, useState } from "react";
+import homeImg from "../assets/Toyota_Prius_Auto_Repair_home.png";
+import img1 from "../assets/Toyota_Prius _New_&_Reconditioning_Hybrid Battery_Auto Repair_Oil_Change_New_&_Used_tire_Diagnosis_Mechanic_Shop_1.png";
+import img2 from "../assets/Toyota_Prius _New_&_Reconditioning_Hybrid Battery_Auto Repair_Oil_Change_New_&_Used_tire_Diagnosis_Mechanic_Shop_5.png";
+import img3 from "../assets/battery_pic.png";
+import img4 from "../assets/battery.png";
+import img5 from "../assets/fix.png";
+import img6 from "../assets/prius.png";
+import img7 from "../assets/Toyota_Prius _New_&_Reconditioning_Hybrid Battery_Auto Repair_Oil_Change_New_&_Used_tire_Diagnosis_Mechanic_Shop_1_6.png";
+import img8 from "../assets/Toyota_Prius _New_&_Reconditioning_Hybrid Battery_Auto Repair_Oil_Change_New_&_Used_tire_Diagnosis_Mechanic_Shop_1_7.png";
+import img9 from "../assets/Toyota_Prius _New_&_Reconditioning_Hybrid Battery_Auto Repair_Oil_Change_New_&_Used_tire_Diagnosis_Mechanic_Shop_1.png";
+import img10 from "../assets/Toyota_Prius _New_&_Reconditioning_Hybrid Battery_Auto Repair_Oil_Change_New_&_Used_tire_Diagnosis_Mechanic_Shop_3.png";
+
+// Shop phone numbers — TODO: replace SHOP_PHONE with the real landline if different
+const CELL_PHONE = "+15622350298";
+const CELL_DISPLAY = "(562) 235-0298";
+const SHOP_PHONE = "+15622350298";
+const SHOP_DISPLAY = "(562) 235-0298";
 
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lightboxImg, setLightboxImg] = useState(null);
+  const [shopStatus, setShopStatus] = useState({ open: false, text: "" });
+
+  // ── Open / Closed based on Long Beach (America/Los_Angeles) time ──
+  // Hours: Mon–Sat 8:30 AM – 5:00 PM, Sunday CLOSED
+  useEffect(() => {
+    const computeStatus = () => {
+      const now = new Date();
+      const la = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+      const day = la.getDay();                 // 0 = Sun ... 6 = Sat
+      const mins = la.getHours() * 60 + la.getMinutes();
+
+      const OPEN = 8 * 60 + 30;  // 8:30 AM
+      const CLOSE = 17 * 60;     // 5:00 PM
+      const isSunday = day === 0;
+
+      let open = false;
+      let text = "";
+
+      if (isSunday) {
+        open = false;
+        text = "Closed Today · Opens Mon 8:30 AM";
+      } else if (mins < OPEN) {
+        open = false;
+        text = "Opens Today at 8:30 AM";
+      } else if (mins >= CLOSE) {
+        open = false;
+        text = day === 6 ? "Closed · Opens Mon 8:30 AM" : "Closed · Opens Tomorrow 8:30 AM";
+      } else {
+        open = true;
+        const closeIn = CLOSE - mins;
+        text = closeIn <= 60 ? `Open · Closes in ${closeIn} min` : "Open Now · Until 5:00 PM";
+      }
+      setShopStatus({ open, text });
+    };
+    computeStatus();
+    const t = setInterval(computeStatus, 60000); // refresh every minute
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     // Scroll reveal
@@ -20,7 +74,8 @@ export default function Home() {
 
     // Highlight today's hours row
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const today = days[new Date().getDay()];
+    const la = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+    const today = days[la.getDay()];
     document.querySelectorAll(".hours-table tr").forEach((row) => {
       if (row.cells[0] && row.cells[0].textContent.trim() === today) row.classList.add("today");
     });
@@ -38,12 +93,16 @@ export default function Home() {
   const navClick = () => setMobileOpen(false);
 
   const GALLERY = [
-    { label: "Hybrid Battery Bay", emoji: "🔋", bg: "linear-gradient(135deg,#0A2A6E,#1348B8)" },
-    { label: "Tire Mounting Station", emoji: "🛞", bg: "linear-gradient(135deg,#0A3D0A,#1A6B1A)" },
-    { label: "Brake Service Bay", emoji: "🛑", bg: "linear-gradient(135deg,#5C0A0A,#A01010)" },
-    { label: "Electrical Diagnostics", emoji: "⚡", bg: "linear-gradient(135deg,#1A1A5C,#3030A0)" },
-    { label: "Tire Inventory", emoji: "🏪", bg: "linear-gradient(135deg,#2A1A0A,#6B4A10)" },
-    { label: "Engine Repair Bay", emoji: "🔧", bg: "linear-gradient(135deg,#1A0A2A,#4A1A6B)" },
+    { label: "Hybrid Battery Bay", img: img1 },
+    { label: "Tire Mounting Station", img: img2 },
+    { label: "Brake Service Bay", img: img3 },
+    { label: "Electrical Diagnostics", img: img4 },
+    { label: "Tire Inventory", img: img5 },
+    { label: "Engine Repair Bay", img: img6 },
+    { label: "Oil Change Service", img: img7 },
+    { label: "Diagnostics Center", img: img8 },
+    { label: "Reconditioning Bay", img: img9 },
+    { label: "Mechanic Workshop", img: img10 },
   ];
 
   return (
@@ -82,13 +141,14 @@ export default function Home() {
         .topbar-nav a { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: rgba(255,255,255,.8); transition: color .2s; white-space: nowrap; }
         .topbar-nav a:hover { color: var(--orange); }
         .topbar-right { display: flex; align-items: center; gap: 10px; }
+        .topbar-status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 5px 10px; border-radius: 99px; white-space: nowrap; }
+        .topbar-status .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
         .topbar-cta { background: var(--orange); color: var(--dark); border-radius: 6px; padding: 8px 18px; font-size: 13px; font-weight: 700; letter-spacing: .04em; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: background .2s, transform .1s; }
         .topbar-cta:hover { background: var(--orange-d); transform: scale(1.03); }
 
         /* Hamburger button */
         .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 6px; }
         .burger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: all .3s; }
-         
         .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .burger.open span:nth-child(2) { opacity: 0; }
         .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -117,6 +177,8 @@ export default function Home() {
         .hero-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
         .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: var(--dark); font-weight: 700; font-size: 16px; letter-spacing: .03em; padding: 16px 30px; border-radius: var(--r); box-shadow: 0 6px 28px rgba(245,168,0,.45); transition: all .2s; }
         .btn-primary:hover { background: var(--orange-d); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(245,168,0,.5); }
+        .btn-blue { display: inline-flex; align-items: center; gap: 10px; background: var(--blue-mid); color: #fff; font-weight: 700; font-size: 16px; letter-spacing: .03em; padding: 16px 30px; border-radius: var(--r); box-shadow: 0 6px 28px rgba(19,72,184,.45); transition: all .2s; }
+        .btn-blue:hover { background: var(--blue-lt); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(19,72,184,.5); }
         .btn-secondary { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--white); font-weight: 600; font-size: 15px; padding: 15px 28px; border-radius: var(--r); border: 2px solid rgba(255,255,255,.25); transition: all .2s; }
         .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
         .hero-trust { display: flex; gap: 28px; flex-wrap: wrap; }
@@ -133,7 +195,7 @@ export default function Home() {
         .hero-card-divider { border-top: 1px solid rgba(255,255,255,.08); margin: 18px 0; }
         .hero-card-hours { font-size: 12px; color: rgba(255,255,255,.5); text-align: center; line-height: 1.7; }
         .hero-card-hours strong { color: var(--white); }
-        .open-badge { display: inline-block; background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.4); color: #4ADE80; border-radius: 99px; padding: 3px 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+        .open-badge { display: inline-block; border-radius: 99px; padding: 3px 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; border: 1px solid transparent; }
 
         /* TICKER inside hero */
         .ticker { background: var(--orange); overflow: hidden; padding: 10px 0; border-top: 2px solid var(--orange-d); position: relative; z-index: 2; flex-shrink: 0; }
@@ -146,9 +208,6 @@ export default function Home() {
         .about { background: #080F23; }
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
         .about-img-wrap { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4/3; background: linear-gradient(135deg,#0A2A6E 0%,#1348B8 100%); display: flex; align-items: center; justify-content: center; }
-        .about-img-placeholder { text-align: center; padding: 40px; }
-        .about-img-placeholder svg { width: 100px; height: 100px; opacity: .6; margin: 0 auto 16px; display: block; }
-        .about-img-placeholder p { font-size: 13px; color: rgba(255,255,255,.4); }
         .about-badge-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
         .about-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r); padding: 16px 20px; min-width: 110px; text-align: center; }
         .about-badge .n { font-family: var(--ff-head); font-size: 32px; font-weight: 900; color: var(--orange); line-height: 1; }
@@ -198,28 +257,36 @@ export default function Home() {
         .prius-feature { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #8090B0; }
         .prius-feature::before { content: '✓'; color: var(--orange); font-weight: 700; }
 
-        /* ── GALLERY ── */
+        /* ── GALLERY (bigger + eye-catching) ── */
         .gallery { background: #080F23; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
-        .gallery-card { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4/3; cursor: pointer; border: 1px solid rgba(255,255,255,.08); transition: transform .3s, box-shadow .3s; }
-        .gallery-card:hover { transform: scale(1.03); box-shadow: 0 20px 48px rgba(0,0,0,.5); }
-        .gallery-card-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
-        .gallery-card-emoji { font-size: 48px; transition: transform .3s; }
-        .gallery-card:hover .gallery-card-emoji { transform: scale(1.15); }
-        .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(8,15,35,.9) 0%, transparent 55%); opacity: 0; transition: opacity .3s; display: flex; align-items: flex-end; padding: 18px; }
-        .gallery-card:hover .gallery-overlay { opacity: 1; }
-        .gallery-label { font-family: var(--ff-head); font-size: 17px; font-weight: 800; text-transform: uppercase; color: var(--white); letter-spacing: .04em; }
-        .gallery-placeholder-text { font-size: 11px; color: rgba(255,255,255,.3); margin-top: 4px; }
-        .gallery-note { text-align: center; margin-top: 24px; font-size: 13px; color: var(--gray); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; grid-auto-flow: dense; }
+        .gallery-card { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 1/1; cursor: pointer; border: 2px solid rgba(255,255,255,.08); transition: transform .35s, box-shadow .35s, border-color .35s; }
+        .gallery-card:hover { transform: scale(1.04) translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,.6); border-color: rgba(245,168,0,.55); }
+        .gallery-card-inner { width: 100%; height: 100%; overflow: hidden; }
+        .gallery-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+        .gallery-card:hover img { transform: scale(1.12); }
+        .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(8,15,35,.92) 0%, rgba(8,15,35,.25) 45%, transparent 72%); display: flex; align-items: flex-end; padding: 20px; pointer-events: none; }
+        .gallery-label { font-family: var(--ff-head); font-size: 19px; font-weight: 800; text-transform: uppercase; color: var(--white); letter-spacing: .04em; transform: translateY(4px); transition: transform .3s, color .3s; }
+        .gallery-card:hover .gallery-label { transform: translateY(0); color: var(--orange); }
+        .gallery-zoom { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: rgba(8,15,35,.6); border: 1px solid rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(.8); transition: opacity .3s, transform .3s; }
+        .gallery-card:hover .gallery-zoom { opacity: 1; transform: scale(1); }
+        .gallery-zoom svg { width: 16px; height: 16px; color: #fff; }
+        /* Feature (first) tile spans 2x2 for a bold eye-catching anchor */
+        .gallery-card.feature { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+        .gallery-card.feature .gallery-label { font-size: 26px; }
 
         /* Lightbox */
-        .lightbox { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,.9); display: flex; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(8px); }
-        .lightbox-close { position: absolute; top: 20px; right: 24px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: var(--white); font-size: 22px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
-        .lightbox-close:hover { background: rgba(255,255,255,.2); }
-        .lightbox-content { background: linear-gradient(135deg,#0A2A6E,#1348B8); border-radius: var(--r-lg); width: 100%; max-width: 640px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
-        .lightbox-emoji { font-size: 80px; }
-        .lightbox-title { font-family: var(--ff-head); font-size: 24px; font-weight: 800; text-transform: uppercase; color: var(--white); }
-        .lightbox-hint { font-size: 12px; color: rgba(255,255,255,.4); }
+        .lightbox { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,.92); display: flex; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(8px); }
+        .lightbox-close { position: absolute; top: 20px; right: 24px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: var(--white); font-size: 22px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; z-index: 2; }
+        .lightbox-close:hover { background: rgba(255,255,255,.25); }
+        .lightbox-content { position: relative; background: #0A1A4A; border-radius: var(--r-lg); width: 100%; max-width: 960px; max-height: 84vh; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.7); }
+        .lightbox-content img { width: 100%; height: 100%; max-height: 84vh; object-fit: contain; display: block; }
+        .lightbox-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(8,15,35,.95), transparent); padding: 32px 24px 18px; text-align: center; }
+        .lightbox-title { font-family: var(--ff-head); font-size: 24px; font-weight: 800; text-transform: uppercase; color: var(--white); letter-spacing: .04em; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s; z-index: 2; }
+        .lightbox-nav:hover { background: var(--orange); color: var(--dark); }
+        .lightbox-nav.prev { left: 16px; }
+        .lightbox-nav.next { right: 16px; }
 
         /* ── TESTIMONIALS ── */
         .testimonials { background: #080F23; }
@@ -291,6 +358,7 @@ export default function Home() {
         @media (max-width: 900px) {
           .topbar-nav { display: none; }
           .topbar-cta { display: none; }
+          .topbar-status { display: none; }
           .burger { display: flex; }
           .mobile-nav { display: block; }
           .topbar-brand span { font-size: 14px; }
@@ -301,7 +369,8 @@ export default function Home() {
           .how-steps::before { display: none; }
           .how-steps .how-step:last-child { grid-column: span 2; }
           .prius-grid, .about-grid, .contact-grid, .testimonials-grid { grid-template-columns: 1fr; }
-          .gallery-grid { grid-template-columns: 1fr 1fr; }
+          .gallery-grid { grid-template-columns: repeat(2,1fr); }
+          .gallery-card.feature { grid-column: span 2; grid-row: auto; aspect-ratio: 16/10; }
           .section { padding: 56px 0; }
           .trust-row { gap: 28px; }
         }
@@ -315,12 +384,13 @@ export default function Home() {
           .how-steps { grid-template-columns: 1fr; }
           .how-steps .how-step:last-child { grid-column: span 1; }
           .hero-cta-row { flex-direction: column; }
-          .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+          .btn-primary, .btn-secondary, .btn-blue { width: 100%; justify-content: center; }
           .hero-trust { gap: 16px; }
           .about-badge-row { justify-content: center; }
           .prius-features { grid-template-columns: 1fr; }
           .testimonials-grid { grid-template-columns: 1fr; }
           .gallery-grid { grid-template-columns: 1fr; }
+          .gallery-card.feature { grid-column: span 1; aspect-ratio: 1/1; }
           .btn-dark { font-size: 16px; padding: 15px 24px; }
           .trust-row { flex-direction: column; align-items: center; gap: 24px; }
           .footer-links { gap: 14px; }
@@ -361,11 +431,20 @@ export default function Home() {
         </nav>
 
         <div className="topbar-right">
-          <a href="tel:+15622350298" className="topbar-cta">
+          {/* Live open/closed status */}
+          <span className="topbar-status" style={{
+            background: shopStatus.open ? "rgba(34,197,94,.15)" : "rgba(239,68,68,.15)",
+            border: `1px solid ${shopStatus.open ? "rgba(34,197,94,.4)" : "rgba(239,68,68,.4)"}`,
+            color: shopStatus.open ? "#4ADE80" : "#F87171",
+          }}>
+            <span className="dot" style={{ background: shopStatus.open ? "#4ADE80" : "#F87171" }} />
+            {shopStatus.open ? "Open Now" : "Closed"}
+          </span>
+          <a href={`tel:${CELL_PHONE}`} className="topbar-cta">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
             </svg>
-            (562) 235-0298
+            {CELL_DISPLAY}
           </a>
           {/* Hamburger */}
           <button
@@ -387,10 +466,10 @@ export default function Home() {
         <a href="#reviews" onClick={navClick}>Reviews</a>
         <a href="#gallery" onClick={navClick}>Gallery</a>
         <a href="#contact" onClick={navClick}>Contact</a>
-        <a href="tel:+15622350298" className="mob-cta" onClick={navClick}>📞 (562) 235-0298</a>
+        <a href={`tel:${CELL_PHONE}`} className="mob-cta" onClick={navClick}>📞 {CELL_DISPLAY}</a>
       </nav>
 
-      {/* ── HERO — ticker is inside the section at the bottom ── */}
+      {/* ── HERO ── */}
       <section className="hero" id="hero">
         <div className="hero-word">REPAIR</div>
 
@@ -412,11 +491,17 @@ export default function Home() {
                   Specialized in Toyota Prius hybrid battery reconditioning, new &amp; used tire sales, brake service, oil changes, electrical diagnostics, and full auto repair — right here on East Anaheim St.
                 </p>
                 <div className="hero-cta-row">
-                  <a href="tel:+15622350298" className="btn-primary">
+                  <a href={`tel:${CELL_PHONE}`} className="btn-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
                     </svg>
-                    Call (562) 235-0298
+                    Call Cell · {CELL_DISPLAY}
+                  </a>
+                  <a href={`tel:${SHOP_PHONE}`} className="btn-blue">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    Call Shop
                   </a>
                   <a href="#services" className="btn-secondary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -452,10 +537,16 @@ export default function Home() {
                 </div>
                 <div className="hero-card-divider"></div>
                 <div className="hero-card-hours">
-                  <div className="open-badge">● Open Now</div><br />
-                  <strong>Mon – Fri</strong>&nbsp;&nbsp;8:30 AM – 5:00 PM<br />
-                  <strong>Saturday</strong>&nbsp;&nbsp;8:30 AM – 5:00 PM<br />
-                  <strong>Sunday</strong>&nbsp;&nbsp;&nbsp;&nbsp;8:30 AM – 3:00 PM<br /><br />
+                  <div className="open-badge" style={{
+                    background: shopStatus.open ? "rgba(34,197,94,.15)" : "rgba(239,68,68,.15)",
+                    borderColor: shopStatus.open ? "rgba(34,197,94,.4)" : "rgba(239,68,68,.4)",
+                    color: shopStatus.open ? "#4ADE80" : "#F87171",
+                  }}>
+                    ● {shopStatus.open ? "Open Now" : "Closed Now"}
+                  </div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,.6)", marginBottom: 8 }}>{shopStatus.text}</div>
+                  <strong>Mon – Sat</strong>&nbsp;&nbsp;8:30 AM – 5:00 PM<br />
+                  <strong>Sunday</strong>&nbsp;&nbsp;&nbsp;&nbsp;Closed<br /><br />
                   <span style={{ color: "#F5A800", fontWeight: 600 }}>1190 E Anaheim St, Long Beach CA 90813</span>
                 </div>
               </div>
@@ -478,16 +569,7 @@ export default function Home() {
         <div className="container">
           <div className="about-grid">
             <div className="about-img-wrap">
-              <div className="about-img-placeholder">
-                <svg viewBox="0 0 100 100" fill="none">
-                  <rect x="10" y="60" width="80" height="30" rx="4" fill="#1348B8" opacity=".7" />
-                  <rect x="20" y="30" width="60" height="35" rx="3" fill="#1E5ED8" opacity=".6" />
-                  <circle cx="30" cy="75" r="8" fill="#F5A800" opacity=".8" />
-                  <circle cx="70" cy="75" r="8" fill="#F5A800" opacity=".8" />
-                  <rect x="35" y="40" width="30" height="18" rx="2" fill="#F5A800" opacity=".4" />
-                </svg>
-                <p>Place your shop photo here</p>
-              </div>
+              <img src={homeImg} alt="Prius Hybrid Battery Auto Repair Shop" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div className="reveal">
               <div className="eyebrow">About the Shop</div>
@@ -558,7 +640,7 @@ export default function Home() {
           </div>
           <div className="how-steps">
             {[
-              ["1", "Call or Visit", "Call (562) 235-0298 or drive to 1190 E Anaheim St. A real person answers — no menus or hold music."],
+              ["1", "Call or Visit", `Call ${CELL_DISPLAY} or drive to 1190 E Anaheim St. A real person answers — no menus or hold music.`],
               ["2", "Describe the Problem", "Tell us what's wrong. Our technician asks a few quick questions to understand the issue."],
               ["3", "Free Diagnosis", "We run a full diagnostic scan and inspect your vehicle. No guesswork — we pinpoint the issue."],
               ["4", "Upfront Quote", "You get a clear, itemized price before any work starts. Approve it, and we get to work."],
@@ -598,7 +680,7 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <a href="tel:+15622350298" className="btn-primary" style={{ marginTop: 28, width: "fit-content" }}>
+              <a href={`tel:${CELL_PHONE}`} className="btn-primary" style={{ marginTop: 28, width: "fit-content" }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
                 </svg>
@@ -637,18 +719,20 @@ export default function Home() {
             <h2 className="h2">See the Shop<br /><span style={{ color: "var(--orange)" }}>In Action</span></h2>
           </div>
           <div className="gallery-grid reveal">
-            {GALLERY.map((item) => (
+            {GALLERY.map((item, i) => (
               <div
                 key={item.label}
-                className="gallery-card"
+                className={`gallery-card${i === 0 ? " feature" : ""}`}
                 onClick={() => setLightboxImg(item)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && setLightboxImg(item)}
               >
-                <div className="gallery-card-inner" style={{ background: item.bg }}>
-                  <div className="gallery-card-emoji">{item.emoji}</div>
-                  <div className="gallery-placeholder-text">📸 Add your photo here</div>
+                <div className="gallery-card-inner">
+                  <img src={item.img} alt={item.label} loading="lazy" />
+                </div>
+                <div className="gallery-zoom">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>
                 </div>
                 <div className="gallery-overlay">
                   <div className="gallery-label">{item.label}</div>
@@ -656,23 +740,31 @@ export default function Home() {
               </div>
             ))}
           </div>
-          {/* <p className="gallery-note">
-            Replace each card with <code style={{ background: "rgba(255,255,255,.08)", padding: "1px 6px", borderRadius: 4 }}>&lt;img src="..." /&gt;</code> to display real shop photos.
-          </p> */}
         </div>
       </section>
 
-      {/* Lightbox */}
-      {lightboxImg && (
-        <div className="lightbox" onClick={() => setLightboxImg(null)}>
-          <button className="lightbox-close" onClick={() => setLightboxImg(null)}>✕</button>
-          <div className="lightbox-content" style={{ background: lightboxImg.bg }} onClick={(e) => e.stopPropagation()}>
-            <div className="lightbox-emoji">{lightboxImg.emoji}</div>
-            <div className="lightbox-title">{lightboxImg.label}</div>
-            <div className="lightbox-hint">Replace with your actual shop photo</div>
+      {/* Lightbox — shows the real image with prev/next */}
+      {lightboxImg && (() => {
+        const idx = GALLERY.findIndex((g) => g.label === lightboxImg.label);
+        const goTo = (n) => setLightboxImg(GALLERY[(n + GALLERY.length) % GALLERY.length]);
+        return (
+          <div className="lightbox" onClick={() => setLightboxImg(null)}>
+            <button className="lightbox-close" onClick={() => setLightboxImg(null)} aria-label="Close">✕</button>
+            <button className="lightbox-nav prev" onClick={(e) => { e.stopPropagation(); goTo(idx - 1); }} aria-label="Previous">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+              <img src={lightboxImg.img} alt={lightboxImg.label} />
+              <div className="lightbox-caption">
+                <div className="lightbox-title">{lightboxImg.label}</div>
+              </div>
+            </div>
+            <button className="lightbox-nav next" onClick={(e) => { e.stopPropagation(); goTo(idx + 1); }} aria-label="Next">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 5l7 7-7 7" /></svg>
+            </button>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ── TESTIMONIALS ── */}
       <section className="testimonials section" id="reviews">
@@ -730,13 +822,13 @@ export default function Home() {
           <div className="eyebrow" style={{ color: "rgba(0,0,0,.45)" }}>Ready to Get Fixed?</div>
           <h2 className="h2">Call Us Right Now</h2>
           <p className="ctaband-p">Real technicians. Same-day availability. Long Beach's trusted auto repair shop.</p>
-          <a href="tel:+15622350298" className="btn-dark">
+          <a href={`tel:${CELL_PHONE}`} className="btn-dark">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
             </svg>
-            (562) 235-0298
+            {CELL_DISPLAY}
           </a>
-          <p className="ctaband-sub">Mon–Fri 8:30AM–5PM · Sat 8:30AM–5PM · Sun 8:30AM–3PM · 1190 E Anaheim St, Long Beach</p>
+          <p className="ctaband-sub">Mon–Sat 8:30AM–5PM · Sunday Closed · 1190 E Anaheim St, Long Beach</p>
         </div>
       </section>
 
@@ -752,7 +844,11 @@ export default function Home() {
               <ul className="contact-info-list">
                 <li>
                   <div className="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" /></svg></div>
-                  <div><div className="cl">Phone</div><div className="cv"><a href="tel:+15622350298" style={{ color: "var(--orange)" }}>(562) 235-0298</a></div></div>
+                  <div><div className="cl">Cell</div><div className="cv"><a href={`tel:${CELL_PHONE}`} style={{ color: "var(--orange)" }}>{CELL_DISPLAY}</a></div></div>
+                </li>
+                <li>
+                  <div className="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg></div>
+                  <div><div className="cl">Shop</div><div className="cv"><a href={`tel:${SHOP_PHONE}`} style={{ color: "var(--orange)" }}>{SHOP_DISPLAY}</a></div></div>
                 </li>
                 <li>
                   <div className="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg></div>
@@ -769,7 +865,7 @@ export default function Home() {
                   <tbody>
                     {[["Monday", "8:30 AM – 5:00 PM"], ["Tuesday", "8:30 AM – 5:00 PM"], ["Wednesday", "8:30 AM – 5:00 PM"],
                     ["Thursday", "8:30 AM – 5:00 PM"], ["Friday", "8:30 AM – 5:00 PM"],
-                    ["Saturday", "8:30 AM – 5:00 PM"], ["Sunday", "8:30 AM – 3:00 PM"]].map(([d, h]) => (
+                    ["Saturday", "8:30 AM – 5:00 PM"], ["Sunday", "Closed"]].map(([d, h]) => (
                       <tr key={d}><td>{d}</td><td>{h}</td></tr>
                     ))}
                   </tbody>
@@ -789,7 +885,7 @@ export default function Home() {
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   Get Directions
                 </a>
-                <a href="tel:+15622350298" className="btn-primary" style={{ justifyContent: "center", fontSize: 13, padding: 12 }}>
+                <a href={`tel:${CELL_PHONE}`} className="btn-primary" style={{ justifyContent: "center", fontSize: 13, padding: 12 }}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" /></svg>
                   Call Now
                 </a>
@@ -811,13 +907,13 @@ export default function Home() {
             <a href="#reviews">Reviews</a>
             <a href="#contact">Contact</a>
           </div>
-          <p>1190 E Anaheim St, Long Beach, CA 90813 &nbsp;·&nbsp; (562) 235-0298</p>
-          <p style={{ marginTop: 8 }}>© 2025 Prius Hybrid Battery Auto Repair. All rights reserved.</p>
+          <p>1190 E Anaheim St, Long Beach, CA 90813 &nbsp;·&nbsp; {CELL_DISPLAY}</p>
+          <p style={{ marginTop: 8 }}>© {new Date().getFullYear()} Prius Hybrid Battery Auto Repair. All rights reserved.</p>
         </div>
       </footer>
 
       {/* ── FLOATING CALL ── */}
-      <a href="tel:+15622350298" className="float-call" title="Call us now" aria-label="Call (562) 235-0298">
+      <a href={`tel:${CELL_PHONE}`} className="float-call" title="Call us now" aria-label={`Call ${CELL_DISPLAY}`}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
         </svg>
