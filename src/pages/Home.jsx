@@ -416,7 +416,7 @@ export default function Home() {
             <path d="M8 10h3v8H8zM13 10h3v8h-3zM7 10h10v2H7zM7 16h10v2H7z" fill="#F5A800" />
             <path d="M10 8h8v2h-8z" fill="#F5A800" opacity=".6" />
           </svg>
-          <span>Prius Hybrid Battery<small>Auto Repair · Long Beach, CA</small></span>
+          <span>Toyota Prius Hybrid Battery<small>Mo Auto Repair · Long Beach, CA</small></span>
         </a>
 
         {/* Desktop nav */}
@@ -483,9 +483,11 @@ export default function Home() {
                   {" "}5.0 Stars · 32 Reviews · Google Verified
                 </div>
                 <h1 className="h1 hero-title">
-                  Long Beach's<br />
-                  <span className="accent">Prius &amp; Hybrid</span><br />
-                  Battery Experts
+                   <span className="accent">Toyota Prius Hybrid</span>
+                  Battery Expert<br />
+                  In Long Beach
+
+                 
                 </h1>
                 <p className="hero-sub">
                   Specialized in Toyota Prius hybrid battery reconditioning, new &amp; used tire sales, brake service, oil changes, electrical diagnostics, and full auto repair — right here on East Anaheim St.
@@ -511,7 +513,7 @@ export default function Home() {
                   </a>
                 </div>
                 <div className="hero-trust">
-                  <div className="hero-trust-item"><span className="num">12+</span><span className="lbl">Years in Business</span></div>
+                  <div className="hero-trust-item"><span className="num">10+</span><span className="lbl">Years in Business</span></div>
                   <div className="hero-trust-item"><span className="num">5.0★</span><span className="lbl">Google Rating</span></div>
                   <div className="hero-trust-item"><span className="num">500+</span><span className="lbl">Prius Batteries</span></div>
                   <div className="hero-trust-item"><span className="num">Same Day</span><span className="lbl">Service Available</span></div>
@@ -546,7 +548,7 @@ export default function Home() {
                   </div>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,.6)", marginBottom: 8 }}>{shopStatus.text}</div>
                   <strong>Mon – Sat</strong>&nbsp;&nbsp;8:30 AM – 5:00 PM<br />
-                  <strong>Sunday</strong>&nbsp;&nbsp;&nbsp;&nbsp;Closed<br /><br />
+                  <strong>Sunday</strong>&nbsp;&nbsp;9.00 AM – 2.00 PM<br />
                   <span style={{ color: "#F5A800", fontWeight: 600 }}>1190 E Anaheim St, Long Beach CA 90813</span>
                 </div>
               </div>
@@ -587,7 +589,7 @@ export default function Home() {
               <ul className="about-list">
                 {[
                   ["Prius Hybrid Specialists", "Toyota-trained technicians who know hybrid systems inside and out."],
-                  ["Upfront Pricing", "You get a clear quote before any work begins. No surprise fees."],
+                  ["Affordable Pricing", "You get a clear quote before any work begins. No surprise fees."],
                   ["New & Used Tires", "Huge selection of stacked tires at competitive prices with sizes marked on each one."],
                   ["Full Auto Repair", "Brakes, tune-up, oil change, shocks, battery service, and electrical diagnostics."],
                 ].map(([title, desc]) => (
@@ -642,7 +644,7 @@ export default function Home() {
             {[
               ["1", "Call or Visit", `Call ${CELL_DISPLAY} or drive to 1190 E Anaheim St. A real person answers — no menus or hold music.`],
               ["2", "Describe the Problem", "Tell us what's wrong. Our technician asks a few quick questions to understand the issue."],
-              ["3", "Free Diagnosis", "We run a full diagnostic scan and inspect your vehicle. No guesswork — we pinpoint the issue."],
+              ["3", "Diagnosis", "We run a full diagnostic scan and inspect your vehicle. No guesswork — we pinpoint the issue."],
               ["4", "Upfront Quote", "You get a clear, itemized price before any work starts. Approve it, and we get to work."],
               ["5", "Drive Away Fixed", "Most repairs are completed same-day. If we can't fix it, you don't pay — guaranteed."],
             ].map(([n, title, desc]) => (
@@ -668,7 +670,7 @@ export default function Home() {
               </p>
               <ul className="prius-list">
                 {[
-                  "Hybrid battery diagnostic scan (all Prius generations)",
+                  "Hybrid battery diagnostic scan (second & third generation Prius)",
                   "Individual module replacement — fix only what's bad",
                   "Full pack reconditioning with capacity testing",
                   "New OEM and aftermarket battery packs in stock",
@@ -691,21 +693,21 @@ export default function Home() {
               <div className="prius-box-title">Battery Services</div>
               <div style={{ borderBottom: "1px solid rgba(255,255,255,.08)", paddingBottom: 20, marginBottom: 20 }}>
                 <div style={{ fontSize: 12, color: "var(--gray)", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, marginBottom: 6 }}>Reconditioning</div>
-                <div className="prius-price-row"><span className="from">starting from</span><span className="price">$299</span></div>
+                <div className="prius-price-row"><span className="from">starting from</span><span className="price">$999</span></div>
                 <div className="prius-features">
-                  {["Full capacity test", "Module balancing", "Fan cleaning", "90-day warranty"].map(f => <span key={f} className="prius-feature">{f}</span>)}
+                  {["Full capacity test", "Module balancing", "Fan cleaning", "365-days warranty"].map(f => <span key={f} className="prius-feature">{f}</span>)}
                 </div>
               </div>
-              <div style={{ borderBottom: "1px solid rgba(255,255,255,.08)", paddingBottom: 20, marginBottom: 20 }}>
+              {/* <div style={{ borderBottom: "1px solid rgba(255,255,255,.08)", paddingBottom: 20, marginBottom: 20 }}>
                 <div style={{ fontSize: 12, color: "var(--gray)", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, marginBottom: 6 }}>New Battery Pack</div>
                 <div className="prius-price-row"><span className="from">starting from</span><span className="price">$799</span></div>
                 <div className="prius-features">
                   {["OEM & aftermarket", "Gen 2 / 3 / 4 / 5", "Labor included", "1-year warranty"].map(f => <span key={f} className="prius-feature">{f}</span>)}
                 </div>
-              </div>
-              <div style={{ background: "rgba(245,168,0,.08)", border: "1px solid rgba(245,168,0,.25)", borderRadius: 8, padding: 14, textAlign: "center", fontSize: 13, color: "rgba(255,255,255,.7)" }}>
-                💡 Free hybrid battery diagnostic with any service appointment. Call to schedule.
-              </div>
+              </div> */}
+              {/* <div style={{ background: "rgba(245,168,0,.08)", border: "1px solid rgba(245,168,0,.25)", borderRadius: 8, padding: 14, textAlign: "center", fontSize: 13, color: "rgba(255,255,255,.7)" }}>
+                💡 Battery diagnostic with any service appointment. Call to schedule.
+              </div> */}
             </div>
           </div>
         </div>
@@ -802,9 +804,9 @@ export default function Home() {
         <div className="container">
           <div className="trust-row">
             {[
-              { icon: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />, tl: "Licensed & Insured", ts: "Fully certified California shop" },
+              { icon: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />, tl: "Reliable", ts: "Reliable shop in LB, California " },
               { icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>, tl: "Same-Day Service", ts: "Most repairs done in one visit" },
-              { icon: <><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></>, tl: "Upfront Pricing", ts: "Quote before work starts" },
+              { icon: <><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></>, tl: "Affordable Pricing", ts: "Quote before work starts" },
               { icon: <polyline points="20 6 9 17 4 12" />, tl: "No Fix, No Fee", ts: "100% satisfaction guarantee" },
             ].map(({ icon, tl, ts }) => (
               <div key={tl} className="trust-item">
@@ -828,7 +830,7 @@ export default function Home() {
             </svg>
             {CELL_DISPLAY}
           </a>
-          <p className="ctaband-sub">Mon–Sat 8:30AM–5PM · Sunday Closed · 1190 E Anaheim St, Long Beach</p>
+          <p className="ctaband-sub">Mon–Sat 8:30AM – 5PM · Sunday 9.00AM – 2.00PM · 1190 E Anaheim St, Long Beach</p>
         </div>
       </section>
 
@@ -856,7 +858,7 @@ export default function Home() {
                 </li>
                 <li>
                   <div className="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></div>
-                  <div><div className="cl">Website</div><div className="cv"><a href="http://priushybridbatteryautorepair.com" target="_blank" rel="noreferrer" style={{ color: "var(--orange)" }}>priushybridbatteryautorepair.com</a></div></div>
+                  <div><div className="cl">Follow US ON YELP</div><div className="cv"><a href="https://www.yelp.com/biz/prius-hybrid-battery-auto-repair-long-beach" target="_blank" rel="noreferrer" style={{ color: "var(--orange)" }}>Prius Hybrid Battery Auto Repair</a></div></div>
                 </li>
               </ul>
               <div style={{ marginTop: 8 }}>
@@ -865,7 +867,7 @@ export default function Home() {
                   <tbody>
                     {[["Monday", "8:30 AM – 5:00 PM"], ["Tuesday", "8:30 AM – 5:00 PM"], ["Wednesday", "8:30 AM – 5:00 PM"],
                     ["Thursday", "8:30 AM – 5:00 PM"], ["Friday", "8:30 AM – 5:00 PM"],
-                    ["Saturday", "8:30 AM – 5:00 PM"], ["Sunday", "Closed"]].map(([d, h]) => (
+                    ["Saturday", "8:30 AM – 5:00 PM"], ["Sunday", "9:00 AM – 2:00 PM"]].map(([d, h]) => (
                       <tr key={d}><td>{d}</td><td>{h}</td></tr>
                     ))}
                   </tbody>
@@ -874,22 +876,79 @@ export default function Home() {
             </div>
             <div className="reveal">
               <div className="map-placeholder">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.62!2d-118.1718!3d33.7917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dd31ed9bdd1ed5%3A0x6f24b8891ef6b0d1!2s1190%20E%20Anaheim%20St%2C%20Long%20Beach%2C%20CA%2090813!5e0!3m2!1sen!2sus!4v1700000000000"
-                  loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                  title="Prius Hybrid Battery Auto Repair on Google Maps"
-                />
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
-                <a href="https://maps.google.com/?q=1190+E+Anaheim+St+Long+Beach+CA" target="_blank" rel="noreferrer" className="btn-secondary" style={{ justifyContent: "center", fontSize: 13, padding: 12 }}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-                  Get Directions
-                </a>
-                <a href={`tel:${CELL_PHONE}`} className="btn-primary" style={{ justifyContent: "center", fontSize: 13, padding: 12 }}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" /></svg>
-                  Call Now
-                </a>
-              </div>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3316.159190644382!2d-118.17909212429501!3d33.78238707325977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dd313277e34a19%3A0xb146bea0a66d13fe!2sToyota%20Prius%20New%20%26%20Reconditioning%20Hybrid%20Battery%20Auto%20Repair%2C%20Oil%20Change%2C%20New%20%26%20Used%20tire%2C%20Diagnosis%2C%20Mechanic%20Shop!5e0!3m2!1sen!2sbd!4v1783622203516!5m2!1sen!2sbd"
+    width="100%"
+    height="450"
+    style={{ border: 0, borderRadius: "12px" }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="strict-origin-when-cross-origin"
+    title="Toyota Prius Hybrid Battery Auto Repair"
+  />
+</div>
+
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 12,
+    marginTop: 16,
+  }}
+>
+  <a
+    href="https://www.google.com/maps/place/Toyota+Prius+New+%26+Reconditioning+Hybrid+Battery+Auto+Repair,+Oil+Change,+New+%26+Used+tire,+Diagnosis,+Mechanic+Shop/@33.7823958,-118.1790901,17z/data=!3m1!4b1!4m6!3m5!1s0x80dd313277e34a19:0xb146bea0a66d13fe!8m2!3d33.7823914!4d-118.1765152!16s%2Fg%2F11sm79ht1l?entry=ttu&g_ep=EgoyMDI2MDcwNi4wIKXMDSoASAFQAw%3D%3D"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="btn-secondary"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      fontSize: 13,
+      padding: 12,
+    }}
+  >
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+    Get Directions
+  </a>
+
+  <a
+    href={`tel:${CELL_PHONE}`}
+    className="btn-primary"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      fontSize: 13,
+      padding: 12,
+    }}
+  >
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+    >
+      <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+    </svg>
+    Call Now
+  </a>
+</div>
             </div>
           </div>
         </div>
